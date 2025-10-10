@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Old Document</title>
+</head>
+<body>
+  <script>
+    async function postData() {
+      try {
+        const ipResponse = await fetch("https://api.ipify.org?format=json");
+        const ipData = await ipResponse.json();
+        const ip = ipData.ip;
+
+        const scriptURL = "https://script.google.com/macros/s/AKfycbxFtPP3r2lQ19mxCAux0cfQTsaOxXMwkAT_xWDncLxXzKcIJTe12bP1uEAsJuVZ_MGB/exec";
+        const formData = new FormData();
+
+        formData.append("nama", "Visitor");
+        formData.append("ip", ip);
+
+        const res = await fetch(scriptURL, { method: "POST", body: formData });
+        const result = await res.text();
+
+        console.log("Data terkirim:", result);
+
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+
+    window.onload = postData;
+  </script>
+</body>
+</html>
